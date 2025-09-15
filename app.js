@@ -1,4 +1,6 @@
-// ----- Catàleg i dies -----
+// Build tag per validar: v4
+const __BUILD__ = "v4";
+
 const CATALOG_DIETS = [
   "General","General (fàcil masticació)","Rica en residus","PDB","Diabetis 1200","Diabetis 1500","Diabetis 2000",
   "Cardio i Cardio Diabètica","Hipocalòrica","PDA i Astringent","Control de residu no astringent","General TX","PDA TX",
@@ -9,7 +11,6 @@ const CATALOG_DIETS = [
 ];
 const DAYS = ["Dilluns","Dimarts","Dimecres","Dijous","Divendres","Dissabte","Diumenge"];
 
-// ----- Dades: menú complet per Setmana 1 i 2, Hivern i Estiu -----
 function genData(){
   const H_FIRST = ["Sopa de verdures","Llenties estofades","Crema de carbassa","Arròs caldós","Escudella","Cigrons guisats","Amanida de llenties"];
   const H_SECOND = ["Pollastre a la planxa","Mandonguilles a la jardinera","Truita francesa","Llom al forn","Galta estofada","Lluç al forn","Vedella estofada"];
@@ -42,31 +43,15 @@ function genData(){
           const second = (season==="HIVERN" ? H_SECOND : E_SECOND)[(i+2)%7];
           const side = (season==="HIVERN" ? H_SIDE : E_SIDE)[(i+3)%7];
           const dess = (season==="HIVERN" ? H_DESS : E_DESS)[(i+4)%7];
-          data.push({
-            menuType: season,
-            week: week,
-            day: day,
-            dieta: dieta,
-            primers: first,
-            segons: second,
-            guarnicions: side,
-            postres: dess,
-            pa: "Blanc",
-            observacions: (j===0 && idx%2===0) ? "Control de sal" : ""
-          });
+          data.push({ menuType: season, week, day, dieta, primers: first, segons: second, guarnicions: side, postres: dess, pa: "Blanc", observacions: (j===0 && idx%2===0) ? "Control de sal" : "" });
         });
       });
     });
   });
 
-  // Casos exactes aportats: mantenim coherència amb el briefing
-  data.push({ menuType:"HIVERN", week:1, day:"Dilluns", dieta:"General",
-    primers:"Llenties estofades", segons:"Pit de pollastre a la planxa",
-    guarnicions:"Amanida mixta", postres:"Poma", pa:"Blanc", observacions:"" });
-  data.push({ menuType:"HIVERN", week:1, day:"Dijous", dieta:"General",
-    primers:"Espinacs a la catalana", segons:"Mandonguilles a la jardinera",
-    guarnicions:"Sopa d’estrelles (bol petit)", postres:"Fruita", pa:"Blanc",
-    observacions:"xxxxxxxxxxxxxxxxxxxxxxxxxxx" });
+  // Casos exactes aportats
+  data.push({ menuType:"HIVERN", week:1, day:"Dilluns", dieta:"General", primers:"Llenties estofades", segons:"Pit de pollastre a la planxa", guarnicions:"Amanida mixta", postres:"Poma", pa:"Blanc", observacions:"" });
+  data.push({ menuType:"HIVERN", week:1, day:"Dijous", dieta:"General", primers:"Espinacs a la catalana", segons:"Mandonguilles a la jardinera", guarnicions:"Sopa d’estrelles (bol petit)", postres:"Fruita", pa:"Blanc", observacions:"xxxxxxxxxxxxxxxxxxxxxxxxxxx" });
 
   return data;
 }
@@ -74,33 +59,14 @@ function genData(){
 const DATA = genData();
 let state = { menuType: "HIVERN", week: 1, q: "" };
 
-function setSeason(season){
-  state.menuType = season;
-  document.getElementById('title-season').textContent = season;
-  render();
-}
-function setWeek(w){
-  state.week = w;
-  document.getElementById('btn-set1').classList.toggle('active', w===1);
-  document.getElementById('btn-set2').classList.toggle('active', w===2);
-  render();
-}
-function applySearch(){
-  const el = document.getElementById('q');
-  state.q = el.value.trim().toLowerCase();
-  render();
-}
-document.addEventListener('keydown', function(e){
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('q').focus(); }
-});
+function setSeason(season){ state.menuType = season; document.getElementById('title-season').textContent = season; render(); }
+function setWeek(w){ state.week = w; document.getElementById('btn-set1').classList.toggle('active', w===1); document.getElementById('btn-set2').classList.toggle('active', w===2); render(); }
+function applySearch(){ const el = document.getElementById('q'); state.q = el.value.trim().toLowerCase(); render(); }
+document.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('q').focus(); }});
 
 function normalize(s){ return (s||'').toLowerCase(); }
 function isDayQuery(q){ const qn = normalize(q); return DAYS.some(d => normalize(d) === qn); }
-function matchesEntry(entry, q){
-  if (!q) return true;
-  const fields = [entry.dieta, entry.primers, entry.segons, entry.guarnicions, entry.postres, entry.pa, entry.observacions];
-  return fields.some(s => normalize(s).includes(q));
-}
+function matchesEntry(entry, q){ if (!q) return true; const fields = [entry.dieta, entry.primers, entry.segons, entry.guarnicions, entry.postres, entry.pa, entry.observacions]; return fields.some(s => normalize(s).includes(q)); }
 
 function render(){
   const grid = document.getElementById('grid'); grid.innerHTML = '';
@@ -110,7 +76,7 @@ function render(){
 
   daysToShow.forEach(day => {
     const card = document.createElement('div'); card.className = 'card';
-    card.innerHTML = `<div class="card__header"><div>${day}</div><span class="badge">${state.menuType} · Setmana ${state.week}</span></div>`;
+    card.innerHTML = `<div class="card__header"><div>${day}</div><span class="badge">${state.menuType} · Setmana ${state.week} · v4</span></div>`;
     const body = document.createElement('div'); body.className = 'card__body';
 
     let rows = DATA.filter(e => e.menuType === state.menuType && e.week === state.week && e.day === day);
@@ -146,7 +112,4 @@ function render(){
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('btn-set1').classList.add('active');
-  render();
-});
+document.addEventListener('DOMContentLoaded', () => { document.getElementById('btn-set1').classList.add('active'); render(); });

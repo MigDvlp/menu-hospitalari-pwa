@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1F7A6F"/>
   <title>MENÚ SERVEI – HIVERN/ESTIU</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css?v=4"/>
 </head>
 <body>
 <header class="header">
@@ -31,13 +31,13 @@
   </div>
 
   <div id="grid" class="grid"></div>
-  <p class="print-note">PWA demo: Hivern/Estiu · Setmana 1/2 · DINAR. Instal·la-la des del navegador (“Afegir a la pantalla d’inici”).</p>
+  <p class="print-note">PWA demo v4 · Hivern/Estiu · Setmana 1/2 · DINAR. Instal·la-la des del navegador (“Afegir a la pantalla d’inici”).</p>
 </div>
 
-<script src="app.js"></script>
+<script src="app.js?v=4"></script>
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
+  window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js?v=4'));
 }
 </script>
 </body>
