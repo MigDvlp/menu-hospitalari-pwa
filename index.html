@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1F7A6F"/>
+  <title>MENÚ SERVEI – HIVERN/ESTIU</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header class="header">
+  <h1>MENÚ SERVEI – <span id="title-season">HIVERN</span></h1>
+  <div><button class="btn btn-primary" onclick="window.print()">Imprimir setmana</button></div>
+</header>
+
+<div class="wrapper">
+  <div class="tabs">
+    <div class="tab active" id="btn-hivern" onclick="setSeason('HIVERN')">Menú Hivern</div>
+    <div class="tab" id="btn-estiu" onclick="setSeason('ESTIU')">Menú Estiu</div>
+    <div class="tab active" id="btn-set1" onclick="setWeek(1)">Setmana 1</div>
+    <div class="tab" id="btn-set2" onclick="setWeek(2)">Setmana 2</div>
+    <div class="tab">Torn: DINAR (demo)</div>
+  </div>
+
+  <div class="actions">
+    <input class="searchbar" id="q" type="search" placeholder="Cerca per dieta o plats (Ctrl+K)" />
+    <button class="btn" onclick="applySearch()">Cercar</button>
+  </div>
+
+  <div id="grid" class="grid"></div>
+  <p class="print-note">PWA demo: Hivern/Estiu · Setmana 1/2 · DINAR. Instal·la-la des del navegador (“Afegir a la pantalla d’inici”).</p>
+</div>
+
+<script src="app.js"></script>
+<script>
+// Registre del Service Worker per a PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js');
+  });
+}
+</script>
+</body>
+</html>
