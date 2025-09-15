@@ -1,5 +1,5 @@
-// Build tag per validar: v4
-const __BUILD__ = "v4";
+// Build tag: v5
+const __BUILD__ = "v5";
 
 const CATALOG_DIETS = [
   "General","General (fàcil masticació)","Rica en residus","PDB","Diabetis 1200","Diabetis 1500","Diabetis 2000",
@@ -49,7 +49,7 @@ function genData(){
     });
   });
 
-  // Casos exactes aportats
+  // Casos exactes (briefing)
   data.push({ menuType:"HIVERN", week:1, day:"Dilluns", dieta:"General", primers:"Llenties estofades", segons:"Pit de pollastre a la planxa", guarnicions:"Amanida mixta", postres:"Poma", pa:"Blanc", observacions:"" });
   data.push({ menuType:"HIVERN", week:1, day:"Dijous", dieta:"General", primers:"Espinacs a la catalana", segons:"Mandonguilles a la jardinera", guarnicions:"Sopa d’estrelles (bol petit)", postres:"Fruita", pa:"Blanc", observacions:"xxxxxxxxxxxxxxxxxxxxxxxxxxx" });
 
@@ -76,12 +76,23 @@ function render(){
 
   daysToShow.forEach(day => {
     const card = document.createElement('div'); card.className = 'card';
-    card.innerHTML = `<div class="card__header"><div>${day}</div><span class="badge">${state.menuType} · Setmana ${state.week} · v4</span></div>`;
+    card.innerHTML = `<div class="card__header"><div>${day}</div><span class="badge">${state.menuType} · Setmana ${state.week} · v5</span></div>`;
     const body = document.createElement('div'); body.className = 'card__body';
 
     let rows = DATA.filter(e => e.menuType === state.menuType && e.week === state.week && e.day === day);
     if (!isDay && state.q) rows = rows.filter(e => matchesEntry(e, state.q));
     rows.sort((a,b)=> CATALOG_DIETS.indexOf(a.dieta) - CATALOG_DIETS.indexOf(b.dieta));
+
+    const wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-label', 'Taula desplaçable horitzontalment');
+    wrap.setAttribute('tabindex', '0');
+
+    const hint = document.createElement('div');
+    hint.className = 'scroll-hint';
+    hint.textContent = 'Desplaça lateralment per veure totes les columnes →';
+    wrap.appendChild(hint);
 
     const table = document.createElement('table'); table.className = 'table';
     table.innerHTML = `<thead><tr><th>Dieta</th><th>Primer</th><th>Segon</th><th>Guarnició</th><th>Postres</th><th>Pa</th></tr></thead><tbody></tbody>`;
@@ -99,7 +110,8 @@ function render(){
       tbody.appendChild(tr);
     }
 
-    body.appendChild(table);
+    wrap.appendChild(table);
+    body.appendChild(wrap);
 
     const obs = rows.map(r => r.observacions).filter(Boolean).join(' · ');
     if (obs){

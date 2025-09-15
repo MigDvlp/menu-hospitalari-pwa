@@ -1,9 +1,9 @@
-const CACHE = 'menu-hospitalari-v4';
+const CACHE = 'menu-hospitalari-v5';
 const ASSETS = [
   './',
-  './index.html?v=4',
-  './styles.css?v=4',
-  './app.js?v=4',
+  './index.html?v=5',
+  './styles.css?v=5',
+  './app.js?v=5',
   './manifest.webmanifest',
   './icons/192.png',
   './icons/512.png'
